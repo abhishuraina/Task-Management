@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Projects</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css", rel="stylesheet"></link>
+    
+    <style type="text/css">
+		body{
+		  background: rgb(54,217,182);
+		  background: linear-gradient(90deg, rgba(54,217,182,1) 0%, rgba(32,152,126,1) 43%, rgba(0,212,255,1) 100%);
+		}
+
+
+		h1, h2, h3, h4, h5, p, span, strike{
+		  font-family: 'Montserrat', sans-serif;
+
+		}
+
+
+		#task-container{
+		  max-width:600px;
+		  margin:0 auto;
+		  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+		  background-color: #fff;
+		  
+		  margin-top:100px;
+		  margin-bottom:100px;
+
+		  justify-content: space-around;
+		  align-items: flex-start;
+
+		}
+
+		#form-wrapper{
+		  position: -webkit-sticky;
+		  position: sticky;
+		  top: 0rem;
+		  border-bottom: 1px solid  #e9e9e9;
+		  background-color: #fff;
+		  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+ 		  padding:40px;
+		}
+
+		#submit{
+		  background-color: #36d9b6;
+		  border-radius: 0;
+		  border:0;
+		  color: #fff;
+		}
+
+		.flex-wrapper{
+			display: flex;
+		}
+
+		.task-wrapper{
+		  	margin:5px;
+		  	padding: 5px;
+		  	padding:20px;
+		  	cursor: pointer;
+		  	border-bottom: 1px solid  #e9e9e9;
+		  	color: #686868;
+			}
+
+	</style>
+    
+</head>
+
+<body>
+    <div class="container">
+
+		<div id="task-container">
+			<div id="form-wrapper">
+				<form id="form">
+                    
+					<div style="flex: 6">
+                        <input id="title" class="form-control" type="text" name="title" placeholder="Name">
+                    </div>
+                    <div >
+                        <input id="description" class="form-control" type="text" name="description" placeholder="Description">
+                    </div>
+                    <div >
+                        <input id="duration" class="form-control" type="text" name="Duration" placeholder="Duration">
+                    </div>
+                    <br>
+                    <div >
+                        completed
+                        <input type="checkbox" id="completed" name="completed">
+                    </div>
+                    <Button id="submit" class="btn" type="submit" >Submit</button>
+                    <button id="add-task" class="btn" type="submit"> Add task</button>
+                    
+				</form>
+			</div>
+            <div>tasks</div>
+			
+			<div id="list-wrapper">
+			
+			</div>	
+		</div>
+
+	</div>
+
+    <script type="text/javascript">
+
+
+// working functions
+    
+		function getCookie(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+	var csrftoken = getCookie('csrftoken')
+
+    // Fetching details of tasks   
+	var activeItem = null
+    var url = window.location.pathname;
+    url = url.split( '/' );
+
+    var id = url[url.length -2]
+    console.log(id)
+    getDetails(id)
+
+    createList()
+    function createList(){
+        var wrapper = document.getElementById('list-wrapper')
+        wrapper.innerHTML = ''
+        var url = `http://localhost:8000/api/project/${id}/task/`
+
+        fetch(url)
+            .then(( resp ) =>  resp.json() )
+                .then(function(data){
+                    console.log( data)
+
+                    var list = data
+
+                    console.log(list[0]['project'][0])
+                    var finalList = [];
+                    var k = 0
+                    for(var i in list){
+                        if(list[0]['project'][0] == id){
+                            finalList[k] = list[i]
+                            k++
+                        }
+                    }
+                    
+
+                    if(finalList.length == 0){
+                        console.log("hurrey")
+                    }
+                    for(var i in finalList){
+
+                    var item = `
+						<div id="data-row-${i}" class="task-wrapper flex-wrapper">
+							<div style="flex:7">
+
+								${finalList[i].name}
+							</div>
+							<div style="flex:1">
+								<button class="btn btn-sm btn-outline-info edit">Edit </button>
+							</div>
+							<div style="flex:1">
+								<button class="btn btn-sm btn-outline-dark delete">Delete
+									</button>
+							</div>
+						</div>
+					`
+					wrapper.innerHTML += item
+
+                    var editBtn = document.getElementsByClassName('edit')[i]
+                    editBtn.addEventListener('click', function(){
+						window.location.href = `http://localhost:8000/project/${id}/task/`;
+                    })
+                    }
+
+                    for(var i in list){
+                        var editBtn = document.getElementsByClassName('edit')[i]
+						var deleteBtn = document.getElementsByClassName('delete')[i]
+
+
+                    	editBtn.addEventListener('click', (function(item){
+                        return function(){
+                            editItem(item)
+                        }
+                    })(list[i]))
+
+					deleteBtn.addEventListener('click', (function(item){
+                        return function(){
+                            deleteItem(item)
+                        }
+                    })(list[i]))
+                }
+            })
+		}
+        
+	function getDetails(id){
+        var url = `http://localhost:8000/api/project/${id}`
+        fetch(url)
+            .then(( resp ) =>  resp.json() )
+                .then(function(data){
+                    console.log(data)
+        var title = document.getElementById('title').value = data.name
+
+        document.getElementById('description').value = data.description
+        document.getElementById('duration').value = data.duration
+        document.getElementById('completed').value = data.completed
+        if(data.completed == true){
+            document.getElementById('completed').checked = true
+        }
+        else{
+            document.getElementById('completed').checked = false
+        }
+    })    
+}
+
+
+function editItem(item){
+		activeItem = item
+		window.location.href = `http://localhost:8000/project/${id}/task/${item.id}/`;
+
+    }
+
+    function deleteItem(item){
+			fetch(`http://localhost:8000/api/project/${item.id}/task/${item.id}`, {
+				method:'DELETE',
+				headers:{
+				'content-type':'application/json',
+                'X-CSRFToken': csrftoken,
+				}
+			}).then((response)=>{
+				createList()
+			})
+		console.log("clicked")
+	}
+//  Upadting Project Details
+    var form = document.getElementById('form-wrapper');
+
+    form.addEventListener('submit', function(e){    
+        e.preventDefault()
+
+        var url = `http://localhost:8000/api/project/${id}/`
+        var title = document.getElementById('title').value
+
+        var description = document.getElementById('description').value
+        var duration = document.getElementById('duration').value
+        var completed = document.getElementById('completed').value
+
+
+        fetch(url, {
+            method: 'PUT',
+            headers:{
+                'content-type':'application/json',
+                'X-CSRFToken': csrftoken,
+
+            },
+            body:JSON.stringify({
+                'id' : id,
+                'name' : title,
+                'description':description,
+                'duration':duration,
+                'completed':completed,
+        })
+        }).then(function(response){
+            createList()
+            document.getElementById('form').reset();
+        })
+        // window.location.href = "http://localhost:8000/project/";
+
+    })
+    // adding new task
+    var add_tasks = document.getElementById('add-task')
+
+
+
+    add_tasks.addEventListener('click', function(e){
+			e.preventDefault()
+            
+			window.location.href = `http://localhost:8000/project/${id}/task`;
+		})
+
+
+
+	
+</script>
+
+</body>
+
+
+
+</html>
