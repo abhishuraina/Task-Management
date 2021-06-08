@@ -148,13 +148,13 @@
                     console.log( data)
 
                     var list = data
-
-                    console.log(list[0]['project'][0])
                     var finalList = [];
                     var k = 0
                     for(var i in list){
-                        if(list[0]['project'][0] == id){
-                            finalList[k] = list[i]
+
+
+                        if(list[i]['project'][0] == id){
+                            finalList.push(list[i])
                             k++
                         }
                     }
