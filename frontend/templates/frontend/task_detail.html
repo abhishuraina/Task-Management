@@ -183,7 +183,7 @@
                     })
                     }
 
-                    for(var i in list){
+                    for(var i in finalList){
                         var editBtn = document.getElementsByClassName('edit')[i]
 						var deleteBtn = document.getElementsByClassName('delete')[i]
 
@@ -192,13 +192,13 @@
                         return function(){
                             editItem(item)
                         }
-                    })(list[i]))
+                    })(finalList[i]))
 
 					deleteBtn.addEventListener('click', (function(item){
                         return function(){
                             deleteItem(item)
                         }
-                    })(list[i]))
+                    })(finalList[i]))
                 }
             })
 		}
