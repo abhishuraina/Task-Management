@@ -136,7 +136,7 @@
     function createList(){
         var wrapper = document.getElementById('list-wrapper')
         wrapper.innerHTML = ''
-        var url = 'http://localhost:8000/api/project/'
+        var url = 'https://abhishu-task-management.herokuapp.com/api/project/project/'
 
         fetch(url)
             .then(( resp ) =>  resp.json() )
@@ -165,7 +165,7 @@
 
                     var editBtn = document.getElementsByClassName('edit')[i]
                     editBtn.addEventListener('click', function(){
-						window.location.href = "http://localhost:8000/project/2/";
+						window.location.href = "https://abhishu-task-management.herokuapp.com/api/project/2/";
                     })
                     }
 
@@ -203,7 +203,7 @@
     form.addEventListener('submit', function(e){
         e.preventDefault()
 
-        var url = 'http://localhost:8000/api/project/'
+        var url = 'https://abhishu-task-management.herokuapp.com/api/project/'
         var title = document.getElementById('title').value 
 		var description = document.getElementById('description').value
         var duration = document.getElementById('duration').value
@@ -238,12 +238,12 @@
 
     function editItem(item){
 		activeItem = item
-		window.location.href = `http://localhost:8000/project/${item.id}/`;
+		window.location.href = `https://abhishu-task-management.herokuapp.com/api/project/${item.id}/`;
 
     }
 
 	function deleteItem(item){
-			fetch(`http://localhost:8000/api/project/${item.id}/`, {
+			fetch(`https://abhishu-task-management.herokuapp.com/api/project/${item.id}/`, {
 				method:'DELETE',
 				headers:{
 				'content-type':'application/json',
