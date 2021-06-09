@@ -140,7 +140,7 @@
     function createList(){
         var wrapper = document.getElementById('list-wrapper')
         wrapper.innerHTML = ''
-        var url = `http://localhost:8000/api/project/${id}/task/`
+        var url = `https://abhishu-task-management.herokuapp.com/project/${id}/task/`
 
         fetch(url)
             .then(( resp ) =>  resp.json() )
@@ -184,7 +184,7 @@
 
                     var editBtn = document.getElementsByClassName('edit')[i]
                     editBtn.addEventListener('click', function(){
-						window.location.href = `http://localhost:8000/project/${id}/task/`;
+						window.location.href = `https://abhishu-task-management.herokuapp.com/api/project/${id}/task/`;
                     })
                     }
 
@@ -209,7 +209,7 @@
 		}
         
 	function getDetails(id){
-        var url = `http://localhost:8000/api/project/${id}`
+        var url = `https://abhishu-task-management.herokuapp.com/api/project/${id}`
         fetch(url)
             .then(( resp ) =>  resp.json() )
                 .then(function(data){
@@ -231,12 +231,12 @@
 
 function editItem(item){
 		activeItem = item
-		window.location.href = `http://localhost:8000/project/${id}/task/${item.id}/`;
+		window.location.href = `https://abhishu-task-management.herokuapp.com/project/${id}/task/${item.id}/`;
 
     }
 
     function deleteItem(item){
-			fetch(`http://localhost:8000/api/project/${item.id}/task/${item.id}`, {
+			fetch(`hhttps://abhishu-task-management.herokuapp.com/api/project/${item.id}/task/${item.id}`, {
 				method:'DELETE',
 				headers:{
 				'content-type':'application/json',
@@ -253,7 +253,7 @@ function editItem(item){
     form.addEventListener('submit', function(e){    
         e.preventDefault()
 
-        var url = `http://localhost:8000/api/project/${id}/`
+        var url = `https://abhishu-task-management.herokuapp.com/api/project/${id}/`
         var title = document.getElementById('title').value
 
         var description = document.getElementById('description').value
@@ -290,7 +290,7 @@ function editItem(item){
     add_tasks.addEventListener('click', function(e){
 			e.preventDefault()
             
-			window.location.href = `http://localhost:8000/project/${id}/task`;
+			window.location.href = `https://abhishu-task-management.herokuapp.com/project/${id}/task`;
 		})
 
 
