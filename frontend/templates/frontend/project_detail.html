@@ -78,12 +78,20 @@
 				<form id="form">
                     
 					<div style="flex: 6">
+                        <h6>Project Title</h6>
                         <input id="title" class="form-control" type="text" name="title" placeholder="Name">
                     </div>
+                    <br>
                     <div >
+
+                        <h6>Project Description</h6>
                         <input id="description" class="form-control" type="text" name="description" placeholder="Description">
                     </div>
+                    <br>
+
                     <div >
+
+                        <h6>Project Duration</h6>
                         <input id="duration" class="form-control" type="text" name="Duration" placeholder="Duration">
                     </div>
                     <br>
@@ -153,7 +161,7 @@
                     for(var i in list){
 
 
-                        if(list[i]['project'][0] == id){
+                        if(list[i]['project'][i] == id){
                             finalList.push(list[i])
                             k++
                         }
