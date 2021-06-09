@@ -136,7 +136,7 @@
     function createList(){
         var wrapper = document.getElementById('list-wrapper')
         wrapper.innerHTML = ''
-        var url = 'https://abhishu-task-management.herokuapp.com/api/project/project/'
+        var url = 'https://abhishu-task-management.herokuapp.com/api/project/'
 
         fetch(url)
             .then(( resp ) =>  resp.json() )
