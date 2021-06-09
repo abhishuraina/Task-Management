@@ -244,7 +244,7 @@ function editItem(item){
     }
 
     function deleteItem(item){
-			fetch(`hhttp://localhost:8000/api/project/${item.id}/task/${item.id}`, {
+			fetch(`http://localhost:8000/api/project/${id}/task/${item.id}`, {
 				method:'DELETE',
 				headers:{
 				'content-type':'application/json',
