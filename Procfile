@@ -1,0 +1,1 @@
+web : gunigorn project_management.wsgi --log-file -
